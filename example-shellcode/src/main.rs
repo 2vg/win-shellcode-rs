@@ -15,7 +15,8 @@ use utf16_literal::utf16;
 
 pub type PLoadLibraryA = unsafe extern "system" fn(LPCSTR) -> HMODULE;
 pub type PGetProcAddress = unsafe extern "system" fn(HMODULE, LPCSTR) -> LPVOID;
-pub type PMessageBoxW = unsafe extern "system" fn(h: PVOID, text: LPCWSTR, cation: LPCWSTR, t: u32) -> u32;
+pub type PMessageBoxW =
+    unsafe extern "system" fn(h: PVOID, text: LPCWSTR, cation: LPCWSTR, t: u32) -> u32;
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
@@ -25,11 +26,16 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 #[no_mangle]
 pub unsafe extern "C" fn main() {
     let kernel32 = get_module_by_name(utf16!("KERNEL32.DLL\x00").as_ptr());
-    let LoadLibraryA: PLoadLibraryA = transmute(get_func_by_name(kernel32, "LoadLibraryA\x00".as_ptr() as _));
-    let GetProcAddress: PGetProcAddress = transmute(get_func_by_name(kernel32, "GetProcAddress\x00".as_ptr() as _));
+    let LoadLibraryA: PLoadLibraryA =
+        transmute(get_func_by_name(kernel32, "LoadLibraryA\x00".as_ptr() as _));
+    let GetProcAddress: PGetProcAddress = transmute(get_func_by_name(
+        kernel32,
+        "GetProcAddress\x00".as_ptr() as _,
+    ));
 
     let u32_dll = LoadLibraryA("user32.dll\x00".as_ptr() as _);
-    let MessageBoxW: PMessageBoxW = transmute(GetProcAddress(u32_dll, "MessageBoxW\x00".as_ptr() as _));
+    let MessageBoxW: PMessageBoxW =
+        transmute(GetProcAddress(u32_dll, "MessageBoxW\x00".as_ptr() as _));
 
     MessageBoxW(
         NULL,
@@ -64,8 +70,7 @@ unsafe fn get_module_by_name(module_name: *const u16) -> PVOID {
 }
 
 unsafe fn get_func_by_name(module: PVOID, func_name: *const u8) -> PVOID {
-    let nt_header = (module as u64
-        + (*(module as *mut IMAGE_DOS_HEADER)).e_lfanew as u64)
+    let nt_header = (module as u64 + (*(module as *mut IMAGE_DOS_HEADER)).e_lfanew as u64)
         as *mut IMAGE_NT_HEADERS64;
     let export_dir_rva = (*nt_header).OptionalHeader.DataDirectory[0].VirtualAddress as u64;
 

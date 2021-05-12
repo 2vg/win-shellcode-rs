@@ -550,11 +550,13 @@ pub struct IMAGE_NT_HEADERS64 {
 pub const IMAGE_SIZEOF_SHORT_NAME: usize = 8;
 
 #[repr(C)]
-pub struct IMAGE_SECTION_HEADER_Misc ([u32; 1]);
+pub struct IMAGE_SECTION_HEADER_Misc([u32; 1]);
 impl Copy for IMAGE_SECTION_HEADER_Misc {}
 impl Clone for IMAGE_SECTION_HEADER_Misc {
     #[inline]
-    fn clone(&self) -> IMAGE_SECTION_HEADER_Misc { *self }
+    fn clone(&self) -> IMAGE_SECTION_HEADER_Misc {
+        *self
+    }
 }
 impl IMAGE_SECTION_HEADER_Misc {
     pub unsafe fn PhysicalAddress(&self) -> &DWORD {
@@ -614,7 +616,9 @@ pub struct IMAGE_THUNK_DATA64_u1([u64; 1]);
 impl Copy for IMAGE_THUNK_DATA64_u1 {}
 impl Clone for IMAGE_THUNK_DATA64_u1 {
     #[inline]
-    fn clone(&self) -> IMAGE_THUNK_DATA64_u1 { *self }
+    fn clone(&self) -> IMAGE_THUNK_DATA64_u1 {
+        *self
+    }
 }
 impl IMAGE_THUNK_DATA64_u1 {
     pub unsafe fn ForwarderString(&self) -> &ULONGLONG {
@@ -660,7 +664,9 @@ pub struct IMAGE_IMPORT_DESCRIPTOR_u([u32; 1]);
 impl Copy for IMAGE_IMPORT_DESCRIPTOR_u {}
 impl Clone for IMAGE_IMPORT_DESCRIPTOR_u {
     #[inline]
-    fn clone(&self) -> IMAGE_IMPORT_DESCRIPTOR_u { *self }
+    fn clone(&self) -> IMAGE_IMPORT_DESCRIPTOR_u {
+        *self
+    }
 }
 impl IMAGE_IMPORT_DESCRIPTOR_u {
     pub unsafe fn Characteristics(&self) -> &DWORD {
@@ -727,7 +733,9 @@ pub struct IMAGE_RUNTIME_FUNCTION_ENTRY_u([u32; 1]);
 impl Copy for IMAGE_RUNTIME_FUNCTION_ENTRY_u {}
 impl Clone for IMAGE_RUNTIME_FUNCTION_ENTRY_u {
     #[inline]
-    fn clone(&self) -> IMAGE_RUNTIME_FUNCTION_ENTRY_u { *self }
+    fn clone(&self) -> IMAGE_RUNTIME_FUNCTION_ENTRY_u {
+        *self
+    }
 }
 impl IMAGE_RUNTIME_FUNCTION_ENTRY_u {
     pub unsafe fn UnwindInfoAddress(&self) -> &DWORD {

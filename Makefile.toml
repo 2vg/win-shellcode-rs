@@ -1,0 +1,18 @@
+[env]
+SHELLCODE_SRC_PATH = "${CARGO_MAKE_WORKING_DIRECTORY}/shellcode/"
+
+[tasks.clean]
+script = [
+    "cargo clean"
+]
+
+[tasks.build-shellcode]
+script = [
+    "cd %SHELLCODE_SRC_PATH%",
+    "cargo build --release"
+]
+
+[tasks.build]
+command = "cargo"
+args = ["run"]
+dependencies = ["build-shellcode"]
